@@ -1,10 +1,12 @@
 package eu.tutorials.unitconverter
 
 import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,10 +32,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import eu.tutorials.unitconverter.ui.theme.UnitConverterTheme
+import java.time.format.TextStyle
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +59,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UnitConverter(){
 
@@ -64,6 +71,12 @@ fun UnitConverter(){
     var oExpanded by remember { mutableStateOf(false) }
     val conversionFactor = remember{ mutableStateOf(1.00) }
     val oConversionFactor = remember { mutableStateOf(1.00) }
+
+    val customTextStyle = androidx.compose.ui.text.TextStyle(
+        fontFamily = FontFamily.Monospace,
+        fontSize = 32.sp,
+        color = Color.Red
+    )
 
     fun convertUnits(){
         // ?: - elvis operator
@@ -79,7 +92,7 @@ fun UnitConverter(){
     ) {
 
         // Here all the UI elements will be stacked below each other
-        Text("Unit Converter")
+        Text("Unit Converter",style = customTextStyle)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = inputValue,
@@ -187,7 +200,10 @@ fun UnitConverter(){
 
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Result: $outputValue $outputUnit")
+        // Result Text
+        Text("Result: $outputValue $outputUnit",
+                style = MaterialTheme.typography.headlineMedium
+            )
     }
 }
 
